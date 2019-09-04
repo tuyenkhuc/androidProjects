@@ -14,6 +14,3 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
         tools:ignore="MissingConstraints">
-
-        <ImageView
-           />
