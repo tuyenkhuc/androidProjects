@@ -18,12 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
 public class SignupActivity extends AppCompatActivity {
+
+    //Declare FA (Firebase Analytics) object
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -33,6 +38,9 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        //Get FA instance
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -47,6 +55,15 @@ public class SignupActivity extends AppCompatActivity {
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start_forgot_password_signup event
+                String id="signup";
+                String name="forgot_password";
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
+                //end_forgot_password_signup event
                 startActivity(new Intent(SignupActivity.this, ResetPasswordActivity.class));
             }
         });
@@ -54,6 +71,16 @@ public class SignupActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start_forgot_password_signup event
+                String id="signup";
+                String name="signin";
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
+                //end_forgot_password_signup event
+
                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                 finish();
             }
@@ -62,6 +89,16 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start_forgot_password_signup event
+                String id="signup";
+                String name="signup_button";
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
+                //end_forgot_password_signup event
+
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 

@@ -15,6 +15,7 @@ import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -88,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "User not login yet, go to login page", Toast.LENGTH_LONG).show();
         }
         //btnLogin
-        login_home.setOnClickListener(new View.OnClickListener() {
+        /*login_home.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
             }
-        });
+        });*/
 
         //btnChangeEmail
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 changePassword.setVisibility(View.GONE);
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
+
             }
         });
 
