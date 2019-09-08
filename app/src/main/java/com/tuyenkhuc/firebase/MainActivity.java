@@ -1,3 +1,9 @@
+/*
+    Function: ok
+    FA: ok
+    Date:9/9/2019
+ */
+
 package com.tuyenkhuc.firebase;
 
 import androidx.annotation.NonNull;
@@ -19,7 +25,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class MainActivity extends AppCompatActivity {
+
+    //Declare FA
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail,
             btnRemoveUser, changeEmail, changePassword, sendEmail, remove, signout, login_home;
@@ -27,15 +39,25 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    //private Timestamp timestamp  = new Timestamp(System.currentTimeMillis());
+    /*long epoch = Long.parseLong(String.valueOf(timestamp));
+    Date openTime = new Date(epoch*1000);*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.app_name));
-        setSupportActionBar(toolbar);*/
+        //get FA instance
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        //Tracking time: open app
+        Bundle bundle = new Bundle();
+        bundle.putString("open_time", "open_time_value");
+        mFirebaseAnalytics.logEvent("app_open_time", bundle);
+        //End Tracking time: open app
+
+
         //get Firebase instance
         auth = FirebaseAuth.getInstance();
         //get current user
@@ -111,7 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 changePassword.setVisibility(View.GONE);
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
-
+                //FA
+                Bundle bundle = new Bundle();
+                bundle.putString("btn_name", "btnChangeEmail");
+                mFirebaseAnalytics.logEvent("main_btnChangeEmail_is_click", bundle);
+                //end FA
             }
         });
 
@@ -127,10 +153,20 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name", "changeEmail");
+                                        mFirebaseAnalytics.logEvent("main_changeEmail_is_click_success", bundle);
+                                        //end FA
                                         Toast.makeText(MainActivity.this, "Email address is update. Please sign in with new email id!", Toast.LENGTH_LONG).show();
                                         signOut();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name", "changeEmail");
+                                        mFirebaseAnalytics.logEvent("main_changeEmail_is_click_not_success", bundle);
+                                        //end FA
                                         Toast.makeText(MainActivity.this, "Failed to update email!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
@@ -152,11 +188,15 @@ public class MainActivity extends AppCompatActivity {
                 newEmail.setVisibility(View.GONE);
                 currentPassword.setVisibility(View.GONE);
                 newPassword.setVisibility(View.VISIBLE);
-
                 changeEmail.setVisibility(View.GONE);
                 changePassword.setVisibility(View.VISIBLE);
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
+                //FA
+                Bundle bundle = new Bundle();
+                bundle.putString("btn_name","btnChangePassword");
+                mFirebaseAnalytics.logEvent("main_btnChangePassword_is_click",bundle);
+                //End FA
             }
         });
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -174,10 +214,20 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            //FA
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("btn_name","changePassword");
+                                            mFirebaseAnalytics.logEvent("main_changePassword_is_click_success",bundle);
+                                            //end FA
                                             Toast.makeText(MainActivity.this, "Password is updated, sign in with new password", Toast.LENGTH_LONG).show();
                                             signOut();
                                             progressBar.setVisibility(View.GONE);
                                         } else {
+                                            //FA
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("btn_name","changePassword");
+                                            mFirebaseAnalytics.logEvent("main_changePassword_is_click_not_success",bundle);
+                                            //end FA
                                             Toast.makeText(MainActivity.this, "Fail to update password", Toast.LENGTH_LONG).show();
                                             progressBar.setVisibility(View.GONE);
                                         }
@@ -205,6 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 changePassword.setVisibility(View.GONE);
                 sendEmail.setVisibility(View.VISIBLE);
                 remove.setVisibility(View.GONE);
+                //FA
+                Bundle bundle = new Bundle();
+                bundle.putString("btn_name","btnSendResetEmail");
+                mFirebaseAnalytics.logEvent("main_btnSendResetEmail_is_click",bundle);
+                //End FA
             }
         });
         sendEmail.setOnClickListener(new View.OnClickListener() {
@@ -218,9 +273,20 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name","sendEmail");
+                                        mFirebaseAnalytics.logEvent("main_sendEmail_is_success",bundle);
+                                        //End FA
+
                                         Toast.makeText(MainActivity.this, "Reset password email is sent!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name","sendEmail");
+                                        mFirebaseAnalytics.logEvent("main_sendEmail_is_not_success",bundle);
+                                        //End FA
                                         Toast.makeText(MainActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
@@ -245,11 +311,21 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name","btnRemoveUser");
+                                        mFirebaseAnalytics.logEvent("main_btnRemoveUser_is_click_success",bundle);
+                                        //End FA
                                         Toast.makeText(MainActivity.this, "Your profile is deleted :(. Create a new account now!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(MainActivity.this, SignupActivity.class));
                                         finish();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        //FA
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("btn_name","btnRemoveUser");
+                                        mFirebaseAnalytics.logEvent("main_btnRemoveUser_is_click_not_success",bundle);
+                                        //End FA
                                         Toast.makeText(MainActivity.this, "Fail to delete your account", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
@@ -264,6 +340,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 signOut();
+                //FA
+                Bundle bundle = new Bundle();
+                bundle.putString("btn_name","signout");
+                mFirebaseAnalytics.logEvent("main_signout_is_click_success",bundle);
+                //End FA
             }
         });
     }

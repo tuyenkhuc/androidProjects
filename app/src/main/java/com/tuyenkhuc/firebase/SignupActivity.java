@@ -1,6 +1,10 @@
 /*
 Status: Build ok
-Run: ko run được, bi FC
+Run: ok
+Firebase Analytics(FA): ok
+Function: ok
+Date: 9/9/2019
+
  */
 package com.tuyenkhuc.firebase;
 
@@ -29,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
     //Declare FA (Firebase Analytics) object
     private FirebaseAnalytics mFirebaseAnalytics;
 
+
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -56,13 +61,9 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //start_forgot_password_signup event
-                String id="signup";
-                String name="forgot_password";
                 Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
+                bundle.putString("btn_name", "btnResetPassword");
+                mFirebaseAnalytics.logEvent("signup_btnResetPassword_is_click_success", bundle);
                 //end_forgot_password_signup event
                 startActivity(new Intent(SignupActivity.this, ResetPasswordActivity.class));
             }
@@ -72,13 +73,9 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //start_forgot_password_signup event
-                String id="signup";
-                String name="signin";
                 Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
+                bundle.putString("btn_name", "btnSignIn");
+                mFirebaseAnalytics.logEvent("signup_btnSignIn_is_click_success", bundle);
                 //end_forgot_password_signup event
 
                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
@@ -89,15 +86,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start_forgot_password_signup event
-                String id="signup";
-                String name="signup_button";
-                Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,"button");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM,bundle);
-                //end_forgot_password_signup event
+
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
@@ -126,11 +115,21 @@ public class SignupActivity extends AppCompatActivity {
                                 //if sign in fails, display a message to the user.
                                 //if sign in succeed, the auth state listener will be notified and logic to handle
                                 //the signed in user can be handled in the listenter.
-                                if(!task.isSuccessful()){
-                                    Toast.makeText(SignupActivity.this, "Authentication failed."+task.getException(),Toast.LENGTH_SHORT).show();
+                                if (!task.isSuccessful()) {
+                                    //start_forgot_password_signup event
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name", "btnSignUp");
+                                    mFirebaseAnalytics.logEvent("signup_btnSignUp_is_click_not_success", bundle);
+                                    //end_forgot_password_signup event
+                                    Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(), Toast.LENGTH_SHORT).show();
 
-                                }else{
-                                    startActivity(new Intent (SignupActivity.this, MainActivity.class ));
+                                } else {
+                                    //start_forgot_password_signup event
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name", "btnSignUp");
+                                    mFirebaseAnalytics.logEvent("signup_btnSignUp_is_click_success", bundle);
+                                    //end_forgot_password_signup event
+                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                                     finish();
                                 }
                             }
@@ -140,7 +139,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }

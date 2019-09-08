@@ -1,3 +1,9 @@
+/*
+    Function: ok
+    FA: ok
+    Date: 9/9/2019
+ */
+
 package com.tuyenkhuc.firebase;
 
 import android.content.Intent;
@@ -17,15 +23,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LoginActivity extends AppCompatActivity {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+    String id="login";
+    String name="";
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
-
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
 
@@ -33,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //get FA instance
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -58,6 +70,14 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start FA
+                Bundle bundle = new Bundle();
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+//                bundle.putString(FirebaseAnalytics.Event.VIEW_ITEM,"button");
+                bundle.putString("btn_name","btnSignup");
+                mFirebaseAnalytics.logEvent("login_btnSignup_is_click_success",bundle);
+                //end FA
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
@@ -65,6 +85,15 @@ public class LoginActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start FA
+
+                Bundle bundle = new Bundle();
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,id);
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+//                bundle.putString(FirebaseAnalytics.Event.VIEW_ITEM,"button");
+                bundle.putString("btn_name","btnReset");
+                mFirebaseAnalytics.logEvent("login_btnReset_is_click_success",bundle);
+                //end FA
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
@@ -95,6 +124,11 @@ public class LoginActivity extends AppCompatActivity {
                                 //state listener will be notified and logic to handle the signed in user can be handled in the listener
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
+                                    //FA
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name","btnLogin");
+                                    mFirebaseAnalytics.logEvent("login_btnLogin_is_click_not_success",bundle);
+                                    //End FA
                                     //there was a error
                                     if (password.length() < 6) {
                                         inputPassword.setError(getString(R.string.minimum_password));
@@ -102,6 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_fail), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    //start FA
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name","btnLogin");
+                                    mFirebaseAnalytics.logEvent("login_btnLogin_is_click_success",bundle);
+                                    //end FA
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
