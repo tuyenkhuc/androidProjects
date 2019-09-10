@@ -47,6 +47,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                Bundle bundle = new Bundle();
+                bundle.putString("btn_name","btnBack");
+                mFirebaseAnalytics.logEvent("reset_btnBack_is_click_success",bundle);
                 finish();
             }
         });
