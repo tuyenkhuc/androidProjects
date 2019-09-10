@@ -5,6 +5,7 @@ FA:
 
 package com.tuyenkhuc.firebase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -72,6 +73,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                     bundle.putString("btn_name","btnReset");
                                     mFirebaseAnalytics.logEvent("reset_btnReset_is_click_success", bundle);
                                     Toast.makeText(ResetPasswordActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
                                 }else{
                                     Bundle bundle = new Bundle();
                                     bundle.putString("btn_name","btnReset");

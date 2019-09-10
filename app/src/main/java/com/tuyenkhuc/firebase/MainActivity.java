@@ -281,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         Toast.makeText(MainActivity.this, "Reset password email is sent!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                     } else {
                                         //FA
                                         Bundle bundle = new Bundle();
