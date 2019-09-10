@@ -1,3 +1,8 @@
+/*
+Function: ok
+FA:
+ */
+
 package com.tuyenkhuc.firebase;
 
 import android.os.Bundle;
@@ -13,9 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordActivity extends AppCompatActivity {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private EditText inputEmail;
     private Button btnReset, btnBack;
@@ -27,6 +35,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         inputEmail = (EditText) findViewById(R.id.email);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         btnBack = (Button) findViewById(R.id.btn_back);
@@ -56,8 +65,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name","btnReset");
+                                    mFirebaseAnalytics.logEvent("reset_btnReset_is_click_success", bundle);
                                     Toast.makeText(ResetPasswordActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
                                 }else{
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("btn_name","btnReset");
+                                    mFirebaseAnalytics.logEvent("reset_btnReset_is_click_not_success", bundle);
                                     Toast.makeText(ResetPasswordActivity.this, "Failed to sent reset email", Toast.LENGTH_SHORT).show();
                                 }
                                 progressBar.setVisibility(View.GONE);
